@@ -1,12 +1,4 @@
 // /api/send.js (Vercel / Netlify style)
-const express = require("express")
-const app = express()
-const cors = require("cors")
-app.use(
-  cors({
-    origin: "https://mywebsite-36lbjqzd5-nont18s-projects.vercel.app/"
-  })
-)
 export default async function handler(req, res) {
   // CORS สำหรับการทดสอบ - แต่เมื่อ deploy กับ Vercel หน้าเว็บจะอยู่บนโดเมนเดียวกัน
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,9 +9,9 @@ export default async function handler(req, res) {
     return res.status(204).end();
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ status: 'error', message: 'Method not allowed' });
-  }
+  // if (req.method !== 'POST') {
+  //   return res.status(405).json({ status: 'error', message: 'Method not allowed' });
+  // }
 
   try {
     const { name, services, message } = req.body || {};
