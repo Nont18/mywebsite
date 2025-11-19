@@ -1,4 +1,12 @@
 // /api/send.js (Vercel / Netlify style)
+const express = require("express")
+const app = express()
+const cors = require("cors")
+app.use(
+  cors({
+    origin: "https://mywebsite-36lbjqzd5-nont18s-projects.vercel.app/"
+  })
+)
 export default async function handler(req, res) {
   // CORS สำหรับการทดสอบ - แต่เมื่อ deploy กับ Vercel หน้าเว็บจะอยู่บนโดเมนเดียวกัน
   res.setHeader('Access-Control-Allow-Origin', '*');
