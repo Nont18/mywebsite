@@ -9,7 +9,7 @@ function Signed() {
     const message = e.target.message.value;
 
     try {
-      const res = await fetch('/api/send', {
+      const res = await fetch('/api/send.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, services, message }),
