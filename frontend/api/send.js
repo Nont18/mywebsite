@@ -27,23 +27,19 @@ export default async function handler(req, res) {
       return res.status(500).json({ status: 'error', message: 'APPS_SCRIPT_URL not configured' });
     }
 
-    const forwarded = await fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, services, message }),
-    });
+  const forwarded = await fetch(scriptUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, services, message }) });
 
-    // พยายามอ่าน JSON ถ้าเป็นไปได้
-    let payload;
-    try {
-      payload = await forwarded.json();
-    } catch (e) {
-      payload = { status: 'ok' };
-    }
+  // อ่าน raw text เสียก่อน (safely)
+  const text = await forwarded.text();
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch (e) {
+    parsed = text; // เก็บ raw text ถ้าไม่ใช่ JSON
+  }
+  console.log('Forwarded status:', forwarded.status, 'responseText:', text);
 
-    return res.status(forwarded.ok ? 200 : 500).json({ status: 'ok', forwardedStatus: forwarded.status, payload });
-  } catch (err) {
-    console.error("API /api/send error:", err);
-    return res.status(500).json({ status: 'error', message: err.message || 'Internal error' });
+  return res.status(forwarded.ok ? 200 : 500).json({ status: forwarded.ok ? 'ok' : 'error', forwardedStatus: forwarded.status, payload: parsed });
+
   }
 }
