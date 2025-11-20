@@ -1,12 +1,17 @@
-// /api/send.js (Vercel / Netlify style)
+// api/send.js
 export default async function handler(req, res) {
-  // CORS สำหรับการทดสอบ - แต่เมื่อ deploy กับ Vercel หน้าเว็บจะอยู่บนโดเมนเดียวกัน
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  // ปล่อยให้การทดสอบง่าย: ถ้าต้องการ production ให้เปลี่ยน '*' เป็น domain ของคุณ
+  const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || '*';
+
+  // ตอบ preflight
+  res.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  // ถ้าจะใช้ cookie/auth เพิ่ม:
+  // res.setHeader('Access-Control-Allow-Credentials', 'true');
 
   if (req.method === 'OPTIONS') {
+    // preflight request
     return res.status(204).end();
   }
 
@@ -21,29 +26,30 @@ export default async function handler(req, res) {
       return res.status(400).json({ status: 'error', message: 'Missing fields' });
     }
 
-    // เอา URL ของ Apps Script (หรือ API ปลายทาง) จาก environment
     const scriptUrl = process.env.APPS_SCRIPT_URL;
     if (!scriptUrl) {
       return res.status(500).json({ status: 'error', message: 'APPS_SCRIPT_URL not configured' });
     }
 
+    // ส่งต่อไปยัง Apps Script (server-to-server => ไม่มี CORS ปัญหา)
     const forwarded = await fetch(scriptUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, services, message }),
+      // timeout/other options ถ้าต้องการ
     });
 
-    // พยายามอ่าน JSON ถ้าเป็นไปได้
-    let payload;
-    try {
-      payload = await forwarded.json();
-    } catch (e) {
-      payload = { status: 'ok' };
-    }
+    const payload = await forwarded.text().catch(() => '');
+    let jsonPayload = {};
+    try { jsonPayload = JSON.parse(payload); } catch(e) { jsonPayload = { raw: payload }; }
 
-    return res.status(forwarded.ok ? 200 : 500).json({ status: 'ok', forwardedStatus: forwarded.status, payload });
+    return res.status(forwarded.ok ? 200 : 502).json({
+      status: forwarded.ok ? 'ok' : 'forward_error',
+      forwardedStatus: forwarded.status,
+      payload: jsonPayload
+    });
   } catch (err) {
-    console.error("API /api/send error:", err);
+    console.error('API /api/send error:', err);
     return res.status(500).json({ status: 'error', message: err.message || 'Internal error' });
   }
 }

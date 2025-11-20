@@ -1,55 +1,50 @@
-// api/send.js
-export default async function handler(req, res) {
-  // ปล่อยให้การทดสอบง่าย: ถ้าต้องการ production ให้เปลี่ยน '*' เป็น domain ของคุณ
-  const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || '*';
+import React from 'react';
 
-  // ตอบ preflight
-  res.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  // ถ้าจะใช้ cookie/auth เพิ่ม:
-  // res.setHeader('Access-Control-Allow-Credentials', 'true');
+function Signed() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (req.method === 'OPTIONS') {
-    // preflight request
-    return res.status(204).end();
-  }
+    const name = e.target.name.value;
+    const services = e.target.services.value;
+    const message = e.target.message.value;
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ status: 'error', message: 'Method not allowed' });
-  }
+    try {
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, services, message }),
+      });
 
-  try {
-    const { name, services, message } = req.body || {};
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status} - ${text}`);
+      }
 
-    if (!name || !services || !message) {
-      return res.status(400).json({ status: 'error', message: 'Missing fields' });
+      const data = await res.json().catch(() => ({}));
+      alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณครับ!');
+      e.target.reset();
+      console.log('server response:', data);
+    } catch (err) {
+      console.error('send error:', err);
+      alert('เกิดข้อผิดพลาดเมื่อส่งข้อมูล: ' + err.message);
     }
+  };
 
-    const scriptUrl = process.env.APPS_SCRIPT_URL;
-    if (!scriptUrl) {
-      return res.status(500).json({ status: 'error', message: 'APPS_SCRIPT_URL not configured' });
-    }
+  return (
+    <div>
+      <h2>If you are interested in my services, please register your name, services, and message below.</h2>
+      <h2>ในกรณีที่สนใจการบริการของเรา กรุณากรอกชื่อ-นามสกุล, ประเภทบริการ, และข้อความ</h2>
 
-    // ส่งต่อไปยัง Apps Script (server-to-server => ไม่มี CORS ปัญหา)
-    const forwarded = await fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, services, message }),
-      // timeout/other options ถ้าต้องการ
-    });
-
-    const payload = await forwarded.text().catch(() => '');
-    let jsonPayload = {};
-    try { jsonPayload = JSON.parse(payload); } catch(e) { jsonPayload = { raw: payload }; }
-
-    return res.status(forwarded.ok ? 200 : 502).json({
-      status: forwarded.ok ? 'ok' : 'forward_error',
-      forwardedStatus: forwarded.status,
-      payload: jsonPayload
-    });
-  } catch (err) {
-    console.error('API /api/send error:', err);
-    return res.status(500).json({ status: 'error', message: err.message || 'Internal error' });
-  }
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input type="text" name="name" placeholder="Enter your name" required /><br /><br />
+          <input type="text" name="services" placeholder="Enter your services" required /><br /><br />
+          <input type="text" name="message" placeholder="Leave your message here" required /><br /><br />
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  );
 }
+
+export default Signed;
