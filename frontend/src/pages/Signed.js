@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     const { name, services, message } = req.body;
 
     // service account key should be stored in ENV (e.g. process.env.GOOGLE_SERVICE_ACCOUNT)
-    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON); 
     const jwtClient = new google.auth.JWT(
       serviceAccount.client_email,
       null,
