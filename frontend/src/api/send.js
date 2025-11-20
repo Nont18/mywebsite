@@ -1,55 +1,48 @@
-// api/send.js
+// api/send.js (diagnostic)
 export default async function handler(req, res) {
-  // ปล่อยให้การทดสอบง่าย: ถ้าต้องการ production ให้เปลี่ยน '*' เป็น domain ของคุณ
   const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || '*';
 
-  // ตอบ preflight
+  // CORS headers (ตอบ preflight ด้วย)
   res.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN);
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  // ถ้าจะใช้ cookie/auth เพิ่ม:
-  // res.setHeader('Access-Control-Allow-Credentials', 'true');
 
   if (req.method === 'OPTIONS') {
-    // preflight request
+    console.log('Received OPTIONS (preflight)');
     return res.status(204).end();
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ status: 'error', message: 'Method not allowed' });
+  console.log('--- /api/send invoked ---');
+  console.log('Method:', req.method);
+  console.log('Headers:', req.headers);
+
+  // อ่าน body ให้แน่นอน (กรณีบาง runtime ไม่ parse ให้)
+  let body = req.body;
+  if (!body || Object.keys(body || {}).length === 0) {
+    try {
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      const raw = Buffer.concat(chunks).toString();
+      if (raw) {
+        try { body = JSON.parse(raw); }
+        catch (e) { body = { raw }; }
+      } else {
+        body = {};
+      }
+    } catch (e) {
+      console.error('Error reading raw body:', e);
+      body = {};
+    }
   }
 
-  try {
-    const { name, services, message } = req.body || {};
+  console.log('Body:', body);
 
-    if (!name || !services || !message) {
-      return res.status(400).json({ status: 'error', message: 'Missing fields' });
-    }
-
-    const scriptUrl = process.env.APPS_SCRIPT_URL;
-    if (!scriptUrl) {
-      return res.status(500).json({ status: 'error', message: 'APPS_SCRIPT_URL not configured' });
-    }
-
-    // ส่งต่อไปยัง Apps Script (server-to-server => ไม่มี CORS ปัญหา)
-    const forwarded = await fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, services, message }),
-      // timeout/other options ถ้าต้องการ
-    });
-
-    const payload = await forwarded.text().catch(() => '');
-    let jsonPayload = {};
-    try { jsonPayload = JSON.parse(payload); } catch(e) { jsonPayload = { raw: payload }; }
-
-    return res.status(forwarded.ok ? 200 : 502).json({
-      status: forwarded.ok ? 'ok' : 'forward_error',
-      forwardedStatus: forwarded.status,
-      payload: jsonPayload
-    });
-  } catch (err) {
-    console.error('API /api/send error:', err);
-    return res.status(500).json({ status: 'error', message: err.message || 'Internal error' });
-  }
+  // คืน response สำหรับ debug
+  return res.status(200).json({
+    status: 'debug',
+    method: req.method,
+    headers: req.headers,
+    body,
+    message: 'This is a diagnostic response from /api/send. Check function logs too.'
+  });
 }
