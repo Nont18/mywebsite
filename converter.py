@@ -8,3 +8,4 @@ def json_to_env(json_file_path, env_file_path):
         for key, value in data.items():
             f.write(f"{key}={value}\n")
 
+json_to_env("C:/Users/araya/Downloads/sheetformywebsite-d42c72388bfa.json", "myenv.env")
