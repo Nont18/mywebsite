@@ -133,7 +133,9 @@ app.post("/api/send", async (req, res) => {
       // ถ้าจำเป็นเพิ่ม headers
     });
     
-    res.json({success: true, data:{email, name, message}})
+    // res.json({success: true, data:{email, name, message}})
+    const text = await r.text(); // Apps Script ส่ง JSON string กลับ
+    return res.json({ success: true, appsScriptResponse: text });
   }
   catch(err){
     console.log(err)
