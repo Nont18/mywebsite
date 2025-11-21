@@ -1,32 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
+import axios from 'axios';
 
 function Signed() {
+  const [form, setForm] = useState({email:"", name:"", message:""});
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const name = e.target.name.value;
-    const services = e.target.services.value;
-    const message = e.target.message.value;
+    const res = await axios.post("http://localhost:8000/api/send", form)
 
-    try {
-      const res = await fetch('/api/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, services, message }),
-      });
+    if(res.data.success){
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(`HTTP ${res.status} - ${text}`);
-      }
-
-      const data = await res.json().catch(() => ({}));
+      // const data = await res.json().catch(() => ({}));
       alert('ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณครับ!');
-      e.target.reset();
-      console.log('server response:', data);
-    } catch (err) {
-      console.error('send error:', err);
-      alert('เกิดข้อผิดพลาดเมื่อส่งข้อมูล: ' + err.message);
+      console.log(res.data.data);
+      // e.target.reset();
+      // console.log('server response:', data);
+      }
+    if(!res.data.success){
+      console.log("Cannot send the message.")
     }
   };
 
@@ -37,9 +28,9 @@ function Signed() {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <input type="text" name="name" placeholder="Enter your name" required /><br /><br />
-          <input type="text" name="services" placeholder="Enter your services" required /><br /><br />
-          <input type="text" name="message" placeholder="Leave your message here" required /><br /><br />
+          <input type="text" name="email" placeholder="Enter your name" value={form.email} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
+          <input type="text" name="name" placeholder="Enter your services" value={form.name} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
+          <input type="text" name="message" placeholder="Leave your message here" value={form.message} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
           <button type="submit">Submit</button>
         </div>
       </form>
