@@ -119,40 +119,40 @@ app.post("/api/send", async (req, res) => {
   try{
     const {email, name, message} = req.body;
     
-  //   const auth = new google.auth.GoogleAuth({
-  //   keyFile: "../frontend/api/credentials.json",
-  //   scopes: ["https://www.googleapis.com/auth/spreadsheets"]
-  // });
+    const auth = new google.auth.GoogleAuth({
+    keyFile: "../frontend/api/credentials.json",
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"]
+  });
 
-  //   // Creat client instance for auth
-  //   const client = await auth.getClient();
+    // Creat client instance for auth
+    const client = await auth.getClient();
 
-  //   // Instance of Google Sheets API
-  //   const googleSheets = google.sheets({ version: "v4", auth: client});
+    // Instance of Google Sheets API
+    const googleSheets = google.sheets({ version: "v4", auth: client});
 
-  //   const spreadsheetId = "1vDxDOITzun1m1bXpzi-hQO22_0Qv2EdI1EIArozCeIc"
-  //   // Get metadata about spreadsheet
-  //   const metaData = await googleSheets.spreadsheets.get({
-  //     spreadsheetId,
-  //   });
+    const spreadsheetId = "1vDxDOITzun1m1bXpzi-hQO22_0Qv2EdI1EIArozCeIc"
+    // Get metadata about spreadsheet
+    const metaData = await googleSheets.spreadsheets.get({
+      spreadsheetId,
+    });
 
-  //   // Read rows from spreadsheet
-  //   const getRows = await googleSheets.spreadsheets.values.get({
-  //     spreadsheetId,
-  //     range: "Sheet1!A:C",
-  //   });
+    // Read rows from spreadsheet
+    const getRows = await googleSheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: "Sheet1!A:C",
+    });
 
-  //   // Write row(s) to spreadsheet
-  //   await googleSheets.spreadsheets.values.append({
-  //     spreadsheetId,
-  //     range: "Sheet1!A:C",
-  //     valueInputOption: "USER_ENTERED",
-  //     requestBody: {
-  //       values: [
-  //         [email, name, message]
-  //       ]
-  //     }
-  //   });
+    // Write row(s) to spreadsheet
+    await googleSheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: "Sheet1!A:C",
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [
+          [email, name, message]
+        ]
+      }
+    });
     
     // res.send(metaData.data)
     // res.send(getRows.data)
