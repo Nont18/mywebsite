@@ -12,7 +12,7 @@ function App() {
     // Navigation
     <BrowserRouter>
       <nav>
-        <div>
+        <div className='first_div'>
           <Link to="/">Home | </Link>
           <Link to="/services">View Our Services | </Link>
           <Link to='/products'>View Our Products | </Link>

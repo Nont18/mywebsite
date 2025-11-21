@@ -36,6 +36,7 @@
 
 .Image-item {
     text-align: center;
+    background-color: darkgoldenrod;
 }
 
 .Center-Image-item {
@@ -51,3 +52,9 @@
     transform: rotate(360deg);
   }
 }
+
+.first_div {
+  background-color: lightblue;
+  text-align: center;
+}
+

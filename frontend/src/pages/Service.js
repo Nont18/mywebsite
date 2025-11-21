@@ -7,10 +7,6 @@ function Service(){
     return(
         <div>
             <h2>Our Services</h2>
-            
-            <div>
-                <img src={Services} height={500} width={400} />
-            </div>
 
             <div className='Image-index-container'>
                 <div className='Image-item'>
