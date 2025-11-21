@@ -114,6 +114,29 @@ app.get("/api/send", (req,res) => {
 app.post("/api/send", async (req, res) => {
   try{
     const {email, name, message} = req.body;
+
+    //     // service account key should be stored in ENV (e.g. process.env.GOOGLE_SERVICE_ACCOUNT)
+//     const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+//     const jwtClient = new google.auth.JWT(
+//       serviceAccount.client_email,
+//       null,
+//       serviceAccount.private_key,
+//       ["https://www.googleapis.com/auth/spreadsheets"]
+//     );
+
+//     await jwtClient.authorize();
+
+//     const sheets = google.sheets({ version: "v4", auth: jwtClient });
+//     const spreadsheetId = process.env.SPREADSHEET_ID;
+//     const range = "Sheet1!A:D";
+
+//     const values = [[ new Date().toISOString(), name || "", services || "", message || ""]];
+//     await sheets.spreadsheets.values.append({
+//       spreadsheetId,
+//       range,
+//       valueInputOption: "USER_ENTERED",
+//       requestBody: { values }
+//     });
     
     res.json({success: true, data:{email, name, message}})
   }
