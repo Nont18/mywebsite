@@ -101,6 +101,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const fetch = require('node-fetch');
 
 app.use(cors({
   methods: ["GET", "POST"]
@@ -114,28 +115,22 @@ app.get("/api/send", (req,res) => {
 app.post("/api/send", async (req, res) => {
   try{
     const {email, name, message} = req.body;
+    
+    // ส่งข้อมูลไปและเขียนลง GoogleSheet
+    // แอปสคริปต์ URL ที่ได้จากการ Deploy
+    const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbxazscZlREzd0kUmayMW699fLIXSztF_9Xj05azBjI/dev';
 
-    // service account key should be stored in ENV (e.g. process.env.GOOGLE_SERVICE_ACCOUNT)
-    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
-    const jwtClient = new google.auth.JWT(
-      serviceAccount.client_email,
-      null,
-      serviceAccount.private_key,
-      ["https://www.googleapis.com/auth/spreadsheets"]
-    );
+    // ส่งเป็น form-encoded หรือ JSON ขึ้นอยู่กับ doPost ของ Apps Script
+    // ในโค้ด Apps Script คุณเข้าถึง e.parameter[header] ซึ่งอ่าน form-data / query string
+    const form = new URLSearchParams();
+    form.append('Email', email);
+    form.append('Name', name);
+    form.append('Message', message);
 
-    await jwtClient.authorize();
-
-    const sheets = google.sheets({ version: "v4", auth: jwtClient });
-    const spreadsheetId = process.env.SPREADSHEET_ID;
-    const range = "Sheet1!A:D";
-
-    const values = [[ new Date().toISOString(), name || "", services || "", message || ""]];
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range,
-      valueInputOption: "USER_ENTERED",
-      requestBody: { values }
+    const r = await fetch(appsScriptUrl, {
+      method: 'POST',
+      body: form, // application/x-www-form-urlencoded
+      // ถ้าจำเป็นเพิ่ม headers
     });
     
     res.json({success: true, data:{email, name, message}})
