@@ -99,14 +99,19 @@
 
 
 const express = require("express");
+const {google} = require("googleapis");
 const cors = require("cors");
 const app = express();
 const fetch = require('node-fetch');
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+
 
 app.use(cors({
   methods: ["GET", "POST"]
 }));
 app.use(express.json())
+
 
 app.get("/api/send", (req,res) => {
   res.json({message: "CORS issue resolved"});
@@ -116,26 +121,43 @@ app.post("/api/send", async (req, res) => {
   try{
     const {email, name, message} = req.body;
     
-    // ส่งข้อมูลไปและเขียนลง GoogleSheet
-    // แอปสคริปต์ URL ที่ได้จากการ Deploy
-    const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbxazscZlREzd0kUmayMW699fLIXSztF_9Xj05azBjI/dev';
+    const auth = new google.auth.GoogleAuth({
+    keyFile: "./frontend/api/credentials.json",
+    scopes: "https://www.googleapis.com/auth/spreadsheets"
+  });
 
-    // ส่งเป็น form-encoded หรือ JSON ขึ้นอยู่กับ doPost ของ Apps Script
-    // ในโค้ด Apps Script คุณเข้าถึง e.parameter[header] ซึ่งอ่าน form-data / query string
-    const form = new URLSearchParams();
-    form.append('Email', email);
-    form.append('Name', name);
-    form.append('Message', message);
+    // Creat client instance for auth
+    const client = await auth.getClient();
 
-    const r = await fetch(appsScriptUrl, {
-      method: 'POST',
-      body: form, // application/x-www-form-urlencoded
-      // ถ้าจำเป็นเพิ่ม headers
+    // Instance of Google Sheets API
+    const googleSheets = google.sheets({ version: "v4", auth: client});
+
+    const spreadsheetId = "1vDxDOITzun1m1bXpzi-hQO22_0Qv2EdI1EIArozCeIc"
+    // Get metadata about spreadsheet
+    const metaData = await googleSheets.spreadsheets.get({
+      auth,
+      spreadsheetId,
+    });
+
+    // Read rows from spreadsheet
+    const getRows = await googleSheets.spreadsheets.values.get({
+      auth,
+      spreadsheetId,
+      range: "Sheet1!A:A",
+    });
+
+    // Write row(s) to spreadsheet
+    await googleSheets.spreadsheets.values.append({
+      auth,
+      spreadsheetId,
+      range: "Sheet1!A:B",
+      valueInputOption: "USER_ENTERED",
+      resource: {
+        values: [[email, name, message]],
+      },
     });
     
-    // res.json({success: true, data:{email, name, message}})
-    const text = await r.text(); // Apps Script ส่ง JSON string กลับ
-    return res.json({ success: true, appsScriptResponse: text });
+    res.json({success: true, data:{email, name, message}})
   }
   catch(err){
     console.log(err)
