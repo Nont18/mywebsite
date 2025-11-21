@@ -103,8 +103,6 @@ const {google} = require("googleapis");
 const cors = require("cors");
 const app = express();
 const fetch = require('node-fetch');
-app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
 
 
 app.use(cors({
@@ -113,50 +111,51 @@ app.use(cors({
 app.use(express.json())
 
 
-app.get("/api/send", (req,res) => {
-  res.json({message: "CORS issue resolved"});
-})
+// app.get("/api/send", (req,res) => {
+//   res.json({message: "CORS issue resolved"});
+// })
 
 app.post("/api/send", async (req, res) => {
   try{
     const {email, name, message} = req.body;
     
-    const auth = new google.auth.GoogleAuth({
-    keyFile: "./frontend/api/credentials.json",
-    scopes: "https://www.googleapis.com/auth/spreadsheets"
-  });
+  //   const auth = new google.auth.GoogleAuth({
+  //   keyFile: "../frontend/api/credentials.json",
+  //   scopes: ["https://www.googleapis.com/auth/spreadsheets"]
+  // });
 
-    // Creat client instance for auth
-    const client = await auth.getClient();
+  //   // Creat client instance for auth
+  //   const client = await auth.getClient();
 
-    // Instance of Google Sheets API
-    const googleSheets = google.sheets({ version: "v4", auth: client});
+  //   // Instance of Google Sheets API
+  //   const googleSheets = google.sheets({ version: "v4", auth: client});
 
-    const spreadsheetId = "1vDxDOITzun1m1bXpzi-hQO22_0Qv2EdI1EIArozCeIc"
-    // Get metadata about spreadsheet
-    const metaData = await googleSheets.spreadsheets.get({
-      auth,
-      spreadsheetId,
-    });
+  //   const spreadsheetId = "1vDxDOITzun1m1bXpzi-hQO22_0Qv2EdI1EIArozCeIc"
+  //   // Get metadata about spreadsheet
+  //   const metaData = await googleSheets.spreadsheets.get({
+  //     spreadsheetId,
+  //   });
 
-    // Read rows from spreadsheet
-    const getRows = await googleSheets.spreadsheets.values.get({
-      auth,
-      spreadsheetId,
-      range: "Sheet1!A:A",
-    });
+  //   // Read rows from spreadsheet
+  //   const getRows = await googleSheets.spreadsheets.values.get({
+  //     spreadsheetId,
+  //     range: "Sheet1!A:C",
+  //   });
 
-    // Write row(s) to spreadsheet
-    await googleSheets.spreadsheets.values.append({
-      auth,
-      spreadsheetId,
-      range: "Sheet1!A:B",
-      valueInputOption: "USER_ENTERED",
-      resource: {
-        values: [[email, name, message]],
-      },
-    });
+  //   // Write row(s) to spreadsheet
+  //   await googleSheets.spreadsheets.values.append({
+  //     spreadsheetId,
+  //     range: "Sheet1!A:C",
+  //     valueInputOption: "USER_ENTERED",
+  //     requestBody: {
+  //       values: [
+  //         [email, name, message]
+  //       ]
+  //     }
+  //   });
     
+    // res.send(metaData.data)
+    // res.send(getRows.data)
     res.json({success: true, data:{email, name, message}})
   }
   catch(err){
