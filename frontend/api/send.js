@@ -129,7 +129,7 @@ app.post("/api/send", async (req, res) => {
 
     const rows = Object.values(body);
     console.log(rows)
-    
+    console.log(credentials)
     const auth = new google.auth.GoogleAuth({
     // keyFile: "../mywebsite/frontend/api/credentials.json",
     // keyFile: "./api/google-api-credentials.json",
