@@ -102,8 +102,13 @@ const express = require("express");
 const {google} = require("googleapis");
 const cors = require("cors");
 const app = express();
-const fetch = require('node-fetch');
+const { z, ZodError } = require("zod"); // require zod
 
+const contactFormSchema = z.object({
+  email:z.string(),
+  name: z.string(),
+  message: z.string()
+})
 
 app.use(cors({
   methods: ["GET", "POST"]
@@ -118,9 +123,14 @@ app.use(express.json())
 app.post("/api/send", async (req, res) => {
   try{
     const {email, name, message} = req.body;
+    const body = contactFormSchema.parse(req.body);
+
+    const rows = Object.values(body);
+    console.log(rows)
     
     const auth = new google.auth.GoogleAuth({
-    keyFile: "../frontend/api/credentials.json",
+    // keyFile: "../mywebsite/frontend/api/credentials.json",
+    keyFile: "./google-api-credentials.json",
     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
   });
 
@@ -146,16 +156,16 @@ app.post("/api/send", async (req, res) => {
     await googleSheets.spreadsheets.values.append({
       spreadsheetId,
       range: "Sheet1!A:C",
+      insertDataOption: 'INSERT_ROWS',
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [
-          [email, name, message]
-        ]
+        values: [rows]
       }
+      
     });
-    
-    // res.send(metaData.data)
-    // res.send(getRows.data)
+
+  //   // res.send(metaData.data)
+  //   res.send(getRows.data)
     res.json({success: true, data:{email, name, message}})
   }
   catch(err){
