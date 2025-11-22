@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-// const API = 'http://localhost:8000' || process.env.REACT_APP_API_URL; //https://mywebsite-c4634ejog-nont18s-projects.vercel.app
+const API = 'http://localhost:8000' || process.env.REACT_APP_API_URL; //https://mywebsite-c4634ejog-nont18s-projects.vercel.app
 
 function Signed() {
   const [form, setForm] = useState({email:"", name:"", message:""});
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.post(`https://mywebsite-k8m6t0axr-nont18s-projects.vercel.app/api/send`, form)
+    const res = await axios.post(`https://mywebsite-c4634ejog-nont18s-projects.vercel.app/api/send`, form)
     // const res = await axios.post("http://localhost:8000/api/send", form)
 
     if(res.data.success){
