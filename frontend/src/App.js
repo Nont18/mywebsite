@@ -4,7 +4,13 @@ import Index from './pages/Index';
 import ViewService from './pages/Service'; 
 import ViewProduct from './pages/Product';
 import Signed from './pages/Signed';
+import CodingDetails from './pages/CodingDetail';
+import LearnCoding from './pages/LearnCoding';
 import './App.css';
+import LearnOnebyOne from './pages/LearnOnebyOne';
+import ModelDevelopment from './pages/ModelDevelopment';
+import DataScrapingDetails from './pages/DataScrapingDetail';
+import AutomationDetails from './pages/AutomationDetail';
 
 function App() {
   return (
@@ -26,6 +32,12 @@ function App() {
           <Route path="/services" element={<ViewService />}/>
           <Route path="/products" element={<ViewProduct />}/>
           <Route path="/signed" element={<Signed />}/>
+          <Route path="/codingdetails" element={<CodingDetails />}/>
+          <Route path="/learncoding" element={<LearnCoding />}/>
+          <Route path="/learnOnebyOne" element={<LearnOnebyOne />}/>
+          <Route path="/ModelDevelopment" element={<ModelDevelopment />}/>
+          <Route path="/datascraping" element={<DataScrapingDetails />}/>
+          <Route path="/automationdetail" element={<AutomationDetails />}/>
         </Routes>
       </div> 
 
