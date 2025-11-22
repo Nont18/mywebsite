@@ -118,9 +118,9 @@ app.use(express.json())
 const credentials = process.env.GOOGLE_CREDENTIALS;
 
 
-// app.get("/api/send", (req,res) => {
-//   res.json({message: "CORS issue resolved"});
-// })
+app.get("/api/send", (req,res) => {
+  res.json({message: "CORS issue resolved"});
+})
 
 app.post("/api/send", async (req, res) => {
   try{
