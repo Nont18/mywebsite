@@ -133,7 +133,7 @@ app.post("/api/send", async (req, res) => {
     const auth = new google.auth.GoogleAuth({
     // keyFile: "../mywebsite/frontend/api/credentials.json",
     // keyFile: "./api/google-api-credentials.json",
-    credentials:credentials,
+    credentials:JSON.parse(credentials),
     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
   });
 
