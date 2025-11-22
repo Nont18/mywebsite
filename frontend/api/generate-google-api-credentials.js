@@ -17,6 +17,6 @@ const credentials = {
 };
 
 fs.writeFileSync(
-  'google-api-credentials.json',
+  './api/google-api-credentials.json',
   JSON.stringify(credentials, null, 2)
 );
