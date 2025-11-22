@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-const API = process.env.REACT_APP_API_URL || 'http://localhost:8000'; //https://mywebsite-c4634ejog-nont18s-projects.vercel.app/api/send
+const API = 'http://localhost:8000' || process.env.REACT_APP_API_URL; //https://mywebsite-c4634ejog-nont18s-projects.vercel.app
 
 function Signed() {
   const [form, setForm] = useState({email:"", name:"", message:""});
