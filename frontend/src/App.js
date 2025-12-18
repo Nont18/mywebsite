@@ -11,6 +11,7 @@ import LearnOnebyOne from './pages/LearnOnebyOne';
 import ModelDevelopment from './pages/ModelDevelopment';
 import DataScrapingDetails from './pages/DataScrapingDetail';
 import AutomationDetails from './pages/AutomationDetail';
+import Analytics from './pages/Analytics';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/ModelDevelopment" element={<ModelDevelopment />}/>
           <Route path="/datascraping" element={<DataScrapingDetails />}/>
           <Route path="/automationdetail" element={<AutomationDetails />}/>
+          <Route path="/analytics" element={<Analytics />}/>
         </Routes>
       </div> 
 

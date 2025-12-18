@@ -105,8 +105,9 @@ const app = express();
 const { z, ZodError } = require("zod"); // require zod
 
 const contactFormSchema = z.object({
+  name:z.string(),
   email:z.string(),
-  name: z.string(),
+  service: z.string(),
   message: z.string()
 })
 

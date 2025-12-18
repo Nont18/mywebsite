@@ -54,6 +54,9 @@ function Service(){
                     <img src={binary} height={300} width={350} />
                     <p>วิเคราะห์ข้อมูลพร้อมทำนายแนวโน้ม (Data analytics)</p>
                     <p>ราคาเริ่มต้น : 1000 </p>
+                    <nav>
+                        <Link to='/analytics' id='analytics'>View Details </Link>
+                    </nav>
                 </div>
                             
             </div>
