@@ -7,7 +7,7 @@ function Signed() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await axios.post(`https://mywebsite-hr43uke0n-nont18s-projects.vercel.app/api/send`, form)
+    const res = await axios.post(`https://mywebsite-4gy3b494w-nont18s-projects.vercel.app/api/send`, form)
     // const res = await axios.post("http://localhost:8000/api/send", form)
 
     if(res.data.success){
@@ -30,8 +30,8 @@ function Signed() {
 
       <form onSubmit={handleSubmit}>
         <div className='text-container'>
-          <input className='textarea' type="text" name="name" placeholder="Enter your name" value={form.email} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
-          <input className='textarea' type="text" name="email" placeholder="Enter your services" value={form.name} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
+          <input className='textarea' type="text" name="name" placeholder="Enter your name" value={form.name} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
+          <input className='textarea' type="text" name="email" placeholder="Enter your email" value={form.email} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
           <input className='textarea' type="text" name="service" placeholder="Enter your services" value={form.service} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
           <textarea className='textarea' type="text" name="message" rows={15} cols={50} placeholder="Leave Your Message Here" value={form.message} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
           <button className='button' type="submit">Submit</button>
