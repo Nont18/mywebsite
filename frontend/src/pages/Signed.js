@@ -26,13 +26,33 @@ function Signed() {
   return (
     <div>
       <h2>If you are interested in my services, please register your name, services, and message below.</h2>
-      <h2>ในกรณีที่สนใจการบริการของเรา กรุณากรอกชื่อ-นามสกุล, ประเภทบริการ, และข้อความ</h2>
+      <h2>ในกรณีที่สนใจการบริการของเรา กรุณากรอกชื่อ-นามสกุล, อีเมลสำหรับการตอบกลับ, ประเภทบริการ, และข้อความ</h2>
 
       <form onSubmit={handleSubmit}>
         <div className='text-container'>
           <input className='textarea' type="text" name="name" placeholder="Enter your name" value={form.name} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
           <input className='textarea' type="text" name="email" placeholder="Enter your email" value={form.email} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
-          <input className='textarea' type="text" name="service" placeholder="Enter your services" value={form.service} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
+          {/* <input className='textarea' type="text" name="service" placeholder="Enter your services" value={form.service} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br /> */}
+          
+          {/* 🔽 Service Dropdown */}
+          <select
+            className='textarea'
+            name="service"
+            value={form.service}
+            onChange={(e) =>
+              setForm({ ...form, [e.target.name]: e.target.value })
+            }
+          >
+            <option value="">-- Select Service --</option>
+            <option value="วิเคราะห์ข้อมูล/data-analysis">data-analysis</option>
+            <option value="เรียนเขียนโปรแกรม/Learning coding">Learn Coding</option>
+            <option value="พัฒนาระบบAI/AI development">AI / Machine Learning</option>
+            <option value="ปรึกษา/consulting">Consulting</option>
+            <option value="others">Other services</option>
+          </select>
+
+          <br /><br />
+
           <textarea className='textarea' type="text" name="message" rows={15} cols={50} placeholder="Leave Your Message Here" value={form.message} onChange={(e) => setForm({ ...form, [e.target.name]: e.target.value })}/><br /><br />
           <button className='button' type="submit">Submit</button>
         </div>
