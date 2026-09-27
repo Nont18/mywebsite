@@ -561,7 +561,7 @@ prediction = model.predict(X)`}
 
                         <div>
                             <strong>01</strong>
-                             The History of Computer 
+                             Fundamental of Computing 
                         </div>
 
                         <div>
