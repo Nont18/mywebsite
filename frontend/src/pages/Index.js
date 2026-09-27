@@ -214,9 +214,9 @@ prediction = model.predict(X)`}
                         </p>
 
                         <ul>
-                            <li>Data Cleaning</li>
-                            <li>Data Analysis</li>
-                            <li>Data Visualization</li>
+                            <li>Data Cleaning (ทำความสะอาดข้อมูล/เอกสาร)</li>
+                            <li>Data Analysis (วิเคราะห์ข้อมูล)</li>
+                            <li>Data Visualization (นำเสนอข้อมูลให้เข้าใจง่าย)</li>
                             <li>Data Processing</li>
                         </ul>
 
@@ -234,7 +234,7 @@ prediction = model.predict(X)`}
                         </div>
 
                         <h3>
-                            AI / Machine Learning / Chatbot / RAG 
+                            AI / Machine Learning / Chatbot / RAG
                         </h3>
 
                         <p>
@@ -244,10 +244,10 @@ prediction = model.predict(X)`}
                         </p>
 
                         <ul>
-                            <li>Machine Learning</li>
+                            <li>AI Application</li>
                             <li>Prediction</li>
                             <li>Classification</li>
-                            <li>AI Application</li>
+                            <li>ระบบตอบกลับอัตโนมัติ</li>
                         </ul>
 
                         <Link to="/analytics">
@@ -256,6 +256,58 @@ prediction = model.predict(X)`}
 
                     </div>
 
+
+                    <div className="service-card">
+
+                        <div className="service-icon">
+                            🔬
+                        </div>
+
+                        <h3>
+                            Research & Development
+                        </h3>
+
+                        <p>
+                            วิจัยปัญหา,ทดลอง,ปรึกษาและค้นหาคำตอบสำหรับงานของคุณ 
+                        </p>
+
+                        <ul>
+                            <li>Research Problems</li>
+                            <li>Experiment, Development, and Improvement</li>
+                            <li>Consultant</li>
+                        </ul>
+
+                        <Link to="/analytics">
+                            ดูรายละเอียด →
+                        </Link>
+
+                    </div>
+
+                    <div className="service-card">
+
+                        <div className="service-icon">
+                            👁️
+                        </div>
+
+                        <h3>
+                            Computer Vision 
+                        </h3>
+
+                        <p>
+                            พัฒนาระบบตรวจจับสำหรับงานต่างๆ
+                            เช่น ระบบตรวจจับการเคลื่อนไหว, กล้องวงจรปิด
+                        </p>
+
+                        <ul>
+                            <li>Detection System</li>
+                            <li>AI Monitoring System</li>
+                        </ul>
+
+                        <Link to="/analytics">
+                            ดูรายละเอียด →
+                        </Link>
+
+                    </div>
 
                     <div className="service-card">
 
@@ -270,13 +322,38 @@ prediction = model.predict(X)`}
                         <p>
                             พัฒนาโปรแกรมและซอฟท์แวร์
                             รวมถึงระบบ Automation
-                            และโปรแกรมจัดการข้อมูล
+                            และส่วนสำหรับจัดการข้อมูล
                         </p>
 
                         <ul>
                             <li>Automation</li>
                             <li>Data Processing</li>
                             <li>Custom Software เช่น ระบบออกเอกสารอัตโนมัติ</li>
+                        </ul>
+
+                        <Link to="/analytics">
+                            ดูรายละเอียด →
+                        </Link>
+
+                    </div>
+
+                    <div className="service-card">
+
+                        <div className="service-icon">
+                            🌐
+                        </div>
+
+                        <h3>
+                            Web Application
+                        </h3>
+
+                        <p>
+                            พัฒนาเว็บไซต์เบื้องต้น (static website)
+                        </p>
+
+                        <ul>
+                            <li>Website</li>
+                            <li>Database systems</li>
                         </ul>
 
                         <Link to="/analytics">
@@ -340,7 +417,7 @@ prediction = model.predict(X)`}
 
                     <div className="capability-item">
                         <span>✓</span>
-                        AI Application
+                        Computer Vision
                     </div>
 
                     <div className="capability-item">
