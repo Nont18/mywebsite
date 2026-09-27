@@ -1,12 +1,45 @@
+// import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+// function Analytics(){
+//     return(
+//         <div>
+//             <h2>วิเคราะห์ข้อมูล, นำเสนอข้อมูล, ทำนายแนวโน้มอนาคตด้วย AI</h2>
+//             <label>รายละเอียด : </label>
+//             <div>
+//                 <p>
+//                     ✅รับวิเคราะห์ข้อมูล <br></br>
+//                     ✅ทำนายแนวโน้มของข้อมูลในอนาคตด้วย AI <br></br>
+//                     ✅เป็นที่ปรึกษาพร้อมให้คำแนะนำแก่ท่าน <br></br>
+//                     ✅นำเสนอข้อมูลให้ดูเข้าใจมากยิ่งขึ้น <br></br>
+
+//                     📌เหมาะกับผู้ที่สนใจหรือบริษัทต่างๆที่ต้องการจ้างงานการวิเคราะห์ข้อมูล <br></br>
+
+//                     📌การบริการของเราเหมาะสำหรับผู้ที่ต้องการวิเคราะห์ข้อมูลทั้งขนาดเล็กและขนาดใหญ่ โดยเราจะนำเสนอพร้อมทั้งให้คำแนะนำเป็นอย่างดี <br></br>
+//                 </p>
+//             </div>
+
+//             <Link to='/signed'>ลงทะเบียนหรือบอกให้เรารู้ได้ที่นี่ </Link>
+
+//         </div>
+//     );
+// };
+
+// export default Analytics
+
+
+
+
+
+
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 function Analytics(){
     return(
         <div>
-            <h2>วิเคราะห์ข้อมูล, นำเสนอข้อมูล, ทำนายแนวโน้มอนาคตด้วย AI</h2>
-            <label>รายละเอียด : </label>
+            <h2 className="hero-text">วิเคราะห์ข้อมูล, นำเสนอข้อมูล, ทำนายแนวโน้มอนาคตด้วย AI</h2>
+            <label className="hero-description">รายละเอียด : </label>
             <div>
-                <p>
+                <p className="hero-description">
                     ✅รับวิเคราะห์ข้อมูล <br></br>
                     ✅ทำนายแนวโน้มของข้อมูลในอนาคตด้วย AI <br></br>
                     ✅เป็นที่ปรึกษาพร้อมให้คำแนะนำแก่ท่าน <br></br>
@@ -18,7 +51,10 @@ function Analytics(){
                 </p>
             </div>
 
-            <Link to='/signed'>ลงทะเบียนหรือบอกให้เรารู้ได้ที่นี่ </Link>
+
+            <div className='hero-buttons'>
+                <Link to='/signed' className="btn btn-primary">ลงทะเบียนหรือบอกให้เรารู้ได้ที่นี่ </Link>
+            </div>
 
         </div>
     );
